@@ -1,0 +1,14 @@
+{
+  "statusCode": 200,
+  "statusDescription": "200 OK",
+  "headers": {
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "multiValueHeaders": {
+    "Content-Type": [
+      "text/plain; charset=utf-8"
+    ]
+  },
+  "body": "cG9uZw==",
+  "isBase64Encoded": true
+}

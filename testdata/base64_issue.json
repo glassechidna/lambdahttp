@@ -1,0 +1,23 @@
+{
+  "httpMethod": "POST",
+  "path": "/webhook",
+  "headers": {
+    "accept": "*/*",
+    "content-length": "2",
+    "content-type": "application/x-www-form-urlencoded",
+    "host": "teamcityhub.biz.xero-support.com",
+    "user-agent": "curl/7.54.0",
+    "x-amzn-trace-id": "Root=1-5cdde824-ab4dea4a7f5a4680e3c25a16",
+    "x-forwarded-for": "10.56.10.2",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https",
+    "x-github-event": "push"
+  },
+  "requestContext": {
+    "elb": {
+      "targetGroupArn": "arn:aws:elasticloadbalancing:ap-southeast-2:100000000000:targetgroup/teamc-Targe-SWF911AA0S7W/12487fb2099d8c01"
+    }
+  },
+  "isBase64Encoded": true,
+  "body": "e30="
+}
