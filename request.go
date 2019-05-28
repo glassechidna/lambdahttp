@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 )
 
-func newRequest(inner events.ALBTargetGroupRequest) *http.Request {
+func NewHttpRequest(inner events.ALBTargetGroupRequest) *http.Request {
 	u := urlForRequest(inner)
 
 	var body io.Reader = bytes.NewReader([]byte(inner.Body))
@@ -25,6 +26,24 @@ func newRequest(inner events.ALBTargetGroupRequest) *http.Request {
 	}
 
 	return req
+}
+
+func NewLambdaResponse(httpResp *http.Response) (events.ALBTargetGroupResponse, error) {
+	rawBody, err := ioutil.ReadAll(httpResp.Body)
+	if err != nil {
+		return events.ALBTargetGroupResponse{}, err
+	}
+
+	b64 := base64.StdEncoding.EncodeToString(rawBody)
+	response := events.ALBTargetGroupResponse{
+		StatusCode:        httpResp.StatusCode,
+		StatusDescription: httpResp.Status,
+		MultiValueHeaders: httpResp.Header,
+		Headers:           singleValueHeaders(httpResp.Header),
+		Body:              b64,
+		IsBase64Encoded:   true,
+	}
+	return response, nil
 }
 
 func urlForRequest(request events.ALBTargetGroupRequest) *url.URL {

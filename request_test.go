@@ -18,7 +18,7 @@ func TestNewRequest(t *testing.T) {
 	err = json.NewDecoder(f).Decode(&req)
 	assert.NoError(t, err)
 
-	httpReq := newRequest(req)
+	httpReq := NewHttpRequest(req)
 	body, err := ioutil.ReadAll(httpReq.Body)
 	assert.NoError(t, err)
 	assert.Equal(t, "{}", string(body))

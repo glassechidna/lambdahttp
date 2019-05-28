@@ -22,29 +22,16 @@ func (h *Handler) ApplicationLoadBalancer(ctx context.Context, request events.AL
 	}
 
 	w := httptest.NewRecorder()
-	r := newRequest(request)
+	r := NewHttpRequest(request)
 	r = r.WithContext(ctx)
 	h.ServeHTTP(w, r)
 
 	httpResp := w.Result()
-	rawBody, err := ioutil.ReadAll(httpResp.Body)
-	if err != nil {
-		return events.ALBTargetGroupResponse{}, err
-	}
-
-	b64 := base64.StdEncoding.EncodeToString(rawBody)
-	response := events.ALBTargetGroupResponse{
-		StatusCode:        httpResp.StatusCode,
-		StatusDescription: httpResp.Status,
-		MultiValueHeaders: httpResp.Header,
-		Headers:           singleValueHeaders(httpResp.Header),
-		Body:              b64,
-		IsBase64Encoded:   true,
-	}
+	response, err := NewLambdaResponse(httpResp)
 	if h.Log {
 		log(response)
 	}
-	return response, nil
+	return response, err
 }
 
 func (h *Handler) ApiGateway(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
@@ -53,7 +40,7 @@ func (h *Handler) ApiGateway(ctx context.Context, request events.APIGatewayProxy
 	}
 
 	w := httptest.NewRecorder()
-	r := newRequest(apiGwToAlb(request))
+	r := NewHttpRequest(apiGwToAlb(request))
 	r = r.WithContext(ctx)
 	h.ServeHTTP(w, r)
 
