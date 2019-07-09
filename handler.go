@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 )
 
 type Handler struct {
@@ -65,13 +66,23 @@ func (h *Handler) ApiGateway(ctx context.Context, request events.APIGatewayProxy
 }
 
 func apiGwToAlb(r events.APIGatewayProxyRequest) events.ALBTargetGroupRequest {
+	h := map[string]string{}
+	for k, v := range r.Headers {
+		h[strings.ToLower(k)] = v
+	}
+
+	mvh := map[string][]string{}
+	for k, vs := range r.MultiValueHeaders {
+		mvh[strings.ToLower(k)] = vs
+	}
+
 	return events.ALBTargetGroupRequest{
 		HTTPMethod:                      r.HTTPMethod,
 		Path:                            r.Path,
 		QueryStringParameters:           r.QueryStringParameters,
 		MultiValueQueryStringParameters: r.MultiValueQueryStringParameters,
-		Headers:                         r.Headers,
-		MultiValueHeaders:               r.MultiValueHeaders,
+		Headers:                         h,
+		MultiValueHeaders:               mvh,
 		IsBase64Encoded:                 r.IsBase64Encoded,
 		Body:                            r.Body,
 	}
