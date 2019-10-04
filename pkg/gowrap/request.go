@@ -1,14 +1,16 @@
-package lambdahttp
+package gowrap
 
 import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/pkg/errors"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 func NewHttpRequest(inner events.ALBTargetGroupRequest) *http.Request {
@@ -31,7 +33,7 @@ func NewHttpRequest(inner events.ALBTargetGroupRequest) *http.Request {
 func NewLambdaResponse(httpResp *http.Response) (events.ALBTargetGroupResponse, error) {
 	rawBody, err := ioutil.ReadAll(httpResp.Body)
 	if err != nil {
-		return events.ALBTargetGroupResponse{}, err
+		return events.ALBTargetGroupResponse{}, errors.WithStack(err)
 	}
 
 	b64 := base64.StdEncoding.EncodeToString(rawBody)
@@ -61,4 +63,35 @@ func urlForRequest(request events.ALBTargetGroupRequest) *url.URL {
 
 	u, _ := url.Parse(fmt.Sprintf("%s://%s%s?%s", proto, host, path, query.Encode()))
 	return u
+}
+
+func apiGwToAlb(r events.APIGatewayProxyRequest) events.ALBTargetGroupRequest {
+	h := map[string]string{}
+	for k, v := range r.Headers {
+		h[strings.ToLower(k)] = v
+	}
+
+	mvh := map[string][]string{}
+	for k, vs := range r.MultiValueHeaders {
+		mvh[strings.ToLower(k)] = vs
+	}
+
+	return events.ALBTargetGroupRequest{
+		HTTPMethod:                      r.HTTPMethod,
+		Path:                            r.Path,
+		QueryStringParameters:           r.QueryStringParameters,
+		MultiValueQueryStringParameters: r.MultiValueQueryStringParameters,
+		Headers:                         h,
+		MultiValueHeaders:               mvh,
+		IsBase64Encoded:                 r.IsBase64Encoded,
+		Body:                            r.Body,
+	}
+}
+
+func singleValueHeaders(h http.Header) map[string]string {
+	m := map[string]string{}
+	for k, vs := range h {
+		m[k] = vs[0]
+	}
+	return m
 }
