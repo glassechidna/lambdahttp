@@ -49,8 +49,9 @@ func NewLambdaResponse(httpResp *http.Response) (events.ALBTargetGroupResponse, 
 }
 
 func urlForRequest(request events.ALBTargetGroupRequest) *url.URL {
-	proto := request.Headers["x-forwarded-proto"]
-	host := request.Headers["host"]
+	headers := normalizedHeaders(request)
+	proto := headers.Get("x-forwarded-proto")
+	host := headers.Get("host")
 	path := request.Path
 
 	query := url.Values{}
@@ -94,4 +95,17 @@ func singleValueHeaders(h http.Header) map[string]string {
 		m[k] = vs[0]
 	}
 	return m
+}
+
+func normalizedHeaders(request events.ALBTargetGroupRequest) http.Header {
+	headers := http.Header(request.MultiValueHeaders)
+	if headers == nil {
+		headers = http.Header{}
+	}
+
+	for k, v := range request.Headers {
+		headers.Set(k, v)
+	}
+
+	return headers
 }
