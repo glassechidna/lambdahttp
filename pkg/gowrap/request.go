@@ -62,7 +62,11 @@ func urlForRequest(request events.ALBTargetGroupRequest) *url.URL {
 		query[k] = append(query[k], v)
 	}
 
-	u, _ := url.Parse(fmt.Sprintf("%s://%s%s?%s", proto, host, path, query.Encode()))
+	u, err := url.Parse(fmt.Sprintf("%s://%s%s?%s", proto, host, path, query.Encode()))
+	if err != nil {
+		panic(err)
+	}
+
 	return u
 }
 

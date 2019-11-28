@@ -1,0 +1,25 @@
+{
+  "httpMethod": "GET",
+  "path": "/ping",
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": "en-GB,en-US;q=0.9,en;q=0.8,pl;q=0.7",
+    "cache-control": "max-age=0",
+    "dnt": "1",
+    "host": "teamcityhub.biz.xero-support.com",
+    "upgrade-insecure-requests": "1",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
+    "x-amzn-trace-id": "Root=1-5cdde3e8-16864980246acecc6d7fdd18",
+    "x-forwarded-for": "10.56.10.2",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "requestContext": {
+    "elb": {
+      "targetGroupArn": "arn:aws:elasticloadbalancing:ap-southeast-2:100000000000:targetgroup/teamc-Targe-SWF911AA0S7W/12487fb2099d8c01"
+    }
+  },
+  "isBase64Encoded": true,
+  "body": ""
+}

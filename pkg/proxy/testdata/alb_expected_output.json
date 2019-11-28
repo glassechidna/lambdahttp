@@ -1,0 +1,22 @@
+{
+  "statusCode": 200,
+  "statusDescription": "200 OK",
+  "headers": {
+    "Content-Length": "4",
+    "Content-Type": "text/plain; charset=utf-8",
+    "Date": "Sun, 06 Oct 2019 06:53:36 GMT"
+  },
+  "multiValueHeaders": {
+    "Content-Length": [
+      "4"
+    ],
+    "Content-Type": [
+      "text/plain; charset=utf-8"
+    ],
+    "Date": [
+      "Sun, 06 Oct 2019 06:53:36 GMT"
+    ]
+  },
+  "body": "cG9uZw==",
+  "isBase64Encoded": true
+}

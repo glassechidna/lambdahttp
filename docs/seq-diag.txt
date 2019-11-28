@@ -1,0 +1,16 @@
+@startuml
+participant Browser
+participant "API Gateway" as apigw
+participant Lambda
+participant lambdahttp
+participant "Your app" as app
+
+Browser -> apigw: GET /index HTTP/1.1
+apigw -> Lambda: {"spooky": "json"...}
+Lambda -> lambdahttp: (magic)
+lambdahttp -> app: GET /index HTTP/1.1
+app -> lambdahttp: 200 OK ...
+lambdahttp -> Lambda: (magic)
+Lambda -> apigw: {"more": "aws json"...}
+apigw -> Browser: 200 OK ...
+@enduml
