@@ -37,5 +37,19 @@ Let me explain through the only kind of diagram I know: a sequence diagram.
 and converts these requests into regular HTTP over TCP. It converts the responses back to the
 format expected by Lambda and voilà. Nothing new you need to learn.
 
+## What bonus functionality exists?
+
+Glad you asked. Since Lambda doesn't have the same level of support for Secrets
+Manager and Parameter Store that ECS has, `lambdahttp` fills in the gaps. If
+you set an environment variable named `EXAMPLE` to value `{aws-ssm}/path/to/param`,
+then `lambdahttp` will retrieve the value at `/path/to/param` and populate `EXAMPLE`
+with that value. 
+
+Likewise, `EXAMPLE={aws-sm}secretNameOrArn` will cause `lambdahttp` to replace 
+the value with the JSON secret in `secretNameOrArn`. `lambdahttp` also 
+recognises `{aws-sm}secretNameOrArn::password` syntax, in which case it will
+retrieve the secret and populate `EXAMPLE` with only the value in the `password` 
+key.
+
 [releases]: https://github.com/glassechidna/lambdahttp/releases
 [runtime]: https://docs.aws.amazon.com/lambda/latest/dg/runtimes-api.html

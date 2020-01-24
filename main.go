@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/glassechidna/lambdahttp/pkg/proxy"
+	"github.com/glassechidna/lambdahttp/pkg/secretenv"
 	"net/http"
 	"os"
 	"os/exec"
@@ -13,6 +15,12 @@ import (
 )
 
 func main() {
+	sess := session.Must(session.NewSession())
+	err := secretenv.MutateEnv(sess)
+	if err != nil {
+		panic(fmt.Sprintf("%+v", err))
+	}
+
 	port := port()
 
 	ctx := context.Background()
