@@ -42,7 +42,6 @@ func (a *apigw) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
 	response := events.APIGatewayProxyResponse{
 		StatusCode:        httpResp.StatusCode,
 		MultiValueHeaders: httpResp.Header,
-		Headers:           singleValueHeaders(httpResp.Header),
 		Body:              b64,
 		IsBase64Encoded:   true,
 	}
