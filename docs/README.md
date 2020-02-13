@@ -13,7 +13,7 @@ If so, `lambdahttp` is for **you**.
   tab on GitHub.
 * Add your app to the zip file.
 * Upload the zip to S3.
-* Create a Lambda function from that zip file. Configure it to use a "custom runtime"
+* Create a Lambda function from that zip file. Configure it to use the `provided` runtime
   and specify a shell command as the "handler", e.g. `./myprogram listen --port 8080`.
 * Do the API Gateway / Application Load Balancer dance.
 * Swim in the savings of serverless.
