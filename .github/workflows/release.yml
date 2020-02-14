@@ -45,9 +45,6 @@ jobs:
         with:
           name: zip
 
-      - name: ls
-        run: ls -lhR
-
       - name: publish
         uses: docker://awsteele/awscli
         with:
@@ -56,6 +53,6 @@ jobs:
             aws lambda publish-layer-version
             --layer-name lambdahttp
             --compatible-runtimes provided
-            --zip-file fileb://lambdahttp.zip
+            --zip-file fileb://zip/lambdahttp.zip
             --license-info MIT
             "
