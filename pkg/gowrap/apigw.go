@@ -27,6 +27,8 @@ func (a *apigw) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
 		return nil, errors.WithStack(err)
 	}
 
+	ctx = context.WithValue(ctx, contextKey, &input)
+
 	w := httptest.NewRecorder()
 	r := NewHttpRequest(apiGwToAlb(input))
 	r = r.WithContext(ctx)
@@ -48,4 +50,12 @@ func (a *apigw) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
 
 	payload, err = json.Marshal(response)
 	return payload, errors.WithStack(err)
+}
+
+type key struct{}
+var contextKey = &key{}
+
+func ApiGatewayRequest(ctx context.Context) *events.APIGatewayProxyRequest {
+	r, _ := ctx.Value(contextKey).(*events.APIGatewayProxyRequest)
+	return r
 }
